@@ -1,161 +1,188 @@
+
 import React from "react";
 import { Stack, Link } from "expo-router";
-import { FlatList, Pressable, StyleSheet, View, Text, Alert, Platform } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Platform } from "react-native";
 import { IconSymbol } from "@/components/IconSymbol";
-import { GlassView } from "expo-glass-effect";
-import { useTheme } from "@react-navigation/native";
-
-const ICON_COLOR = "#007AFF";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { colors, commonStyles, buttonStyles } from "@/styles/commonStyles";
 
 export default function HomeScreen() {
-  const theme = useTheme();
-  const modalDemos = [
-    {
-      title: "Standard Modal",
-      description: "Full screen modal presentation",
-      route: "/modal",
-      color: "#007AFF",
-    },
-    {
-      title: "Form Sheet",
-      description: "Bottom sheet with detents and grabber",
-      route: "/formsheet",
-      color: "#34C759",
-    },
-    {
-      title: "Transparent Modal",
-      description: "Overlay without obscuring background",
-      route: "/transparent-modal",
-      color: "#FF9500",
-    }
-  ];
-
-  const renderModalDemo = ({ item }: { item: (typeof modalDemos)[0] }) => (
-    <GlassView style={[
-      styles.demoCard,
-      Platform.OS !== 'ios' && { backgroundColor: theme.dark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)' }
-    ]} glassEffectStyle="regular">
-      <View style={[styles.demoIcon, { backgroundColor: item.color }]}>
-        <IconSymbol name="square.grid.3x3" color="white" size={24} />
-      </View>
-      <View style={styles.demoContent}>
-        <Text style={[styles.demoTitle, { color: theme.colors.text }]}>{item.title}</Text>
-        <Text style={[styles.demoDescription, { color: theme.dark ? '#98989D' : '#666' }]}>{item.description}</Text>
-      </View>
-      <Link href={item.route as any} asChild>
-        <Pressable>
-          <GlassView style={[
-            styles.tryButton,
-            Platform.OS !== 'ios' && { backgroundColor: theme.dark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)' }
-          ]} glassEffectStyle="clear">
-            <Text style={[styles.tryButtonText, { color: theme.colors.primary }]}>Try It</Text>
-          </GlassView>
-        </Pressable>
-      </Link>
-    </GlassView>
-  );
-
-  const renderHeaderRight = () => (
-    <Pressable
-      onPress={() => Alert.alert("Not Implemented", "This feature is not implemented yet")}
-      style={styles.headerButtonContainer}
-    >
-      <IconSymbol name="plus" color={theme.colors.primary} />
-    </Pressable>
-  );
-
-  const renderHeaderLeft = () => (
-    <Pressable
-      onPress={() => Alert.alert("Not Implemented", "This feature is not implemented yet")}
-      style={styles.headerButtonContainer}
-    >
-      <IconSymbol
-        name="gear"
-        color={theme.colors.primary}
-      />
-    </Pressable>
-  );
-
   return (
-    <>
+    <SafeAreaView style={[commonStyles.container, { backgroundColor: colors.background }]}>
       {Platform.OS === 'ios' && (
         <Stack.Screen
           options={{
-            title: "Building the app...",
-            headerRight: renderHeaderRight,
-            headerLeft: renderHeaderLeft,
+            title: "Fine Print AI",
+            headerStyle: {
+              backgroundColor: colors.background,
+            },
+            headerTintColor: colors.text,
           }}
         />
       )}
-      <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-        <FlatList
-          data={modalDemos}
-          renderItem={renderModalDemo}
-          keyExtractor={(item) => item.route}
-          contentContainerStyle={[
-            styles.listContainer,
-            Platform.OS !== 'ios' && styles.listContainerWithTabBar
-          ]}
-          contentInsetAdjustmentBehavior="automatic"
-          showsVerticalScrollIndicator={false}
-        />
+      
+      <View style={styles.container}>
+        <View style={styles.heroSection}>
+          <View style={styles.iconContainer}>
+            <IconSymbol name="brain" size={64} color={colors.primary} />
+          </View>
+          
+          <Text style={[commonStyles.title, styles.heroTitle]}>
+            Fine Print AI Analyzer
+          </Text>
+          
+          <Text style={[commonStyles.textSecondary, styles.heroDescription]}>
+            Never miss important details again. Our AI reads and summarizes fine print, 
+            highlighting fees, risks, and key terms in plain language.
+          </Text>
+        </View>
+
+        <View style={styles.featuresSection}>
+          <View style={styles.featureItem}>
+            <IconSymbol name="dollarsign.circle.fill" size={32} color={colors.secondary} />
+            <View style={styles.featureContent}>
+              <Text style={[commonStyles.text, styles.featureTitle]}>
+                Identify Hidden Fees
+              </Text>
+              <Text style={[commonStyles.textSecondary, styles.featureDescription]}>
+                Automatically detect and highlight all fees and charges
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.featureItem}>
+            <IconSymbol name="exclamationmark.triangle.fill" size={32} color={colors.warning} />
+            <View style={styles.featureContent}>
+              <Text style={[commonStyles.text, styles.featureTitle]}>
+                Spot Risks & Obligations
+              </Text>
+              <Text style={[commonStyles.textSecondary, styles.featureDescription]}>
+                Understand your commitments and potential risks
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.featureItem}>
+            <IconSymbol name="clock.fill" size={32} color={colors.accent} />
+            <View style={styles.featureContent}>
+              <Text style={[commonStyles.text, styles.featureTitle]}>
+                Track Important Deadlines
+              </Text>
+              <Text style={[commonStyles.textSecondary, styles.featureDescription]}>
+                Never miss cancellation periods or renewal dates
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.featureItem}>
+            <IconSymbol name="checkmark.circle.fill" size={32} color={colors.success} />
+            <View style={styles.featureContent}>
+              <Text style={[commonStyles.text, styles.featureTitle]}>
+                Plain Language Summaries
+              </Text>
+              <Text style={[commonStyles.textSecondary, styles.featureDescription]}>
+                Complex legal terms explained in simple language
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.ctaSection}>
+          <Link href="/(tabs)/fine-print" asChild>
+            <TouchableOpacity style={[buttonStyles.primary, styles.ctaButton]}>
+              <IconSymbol name="doc.text.magnifyingglass" size={20} color={colors.card} />
+              <Text style={[commonStyles.buttonText, styles.ctaButtonText]}>
+                Start Analyzing Fine Print
+              </Text>
+            </TouchableOpacity>
+          </Link>
+          
+          <Text style={[commonStyles.textSecondary, styles.ctaSubtext]}>
+            Upload documents, take photos, or paste text to get started
+          </Text>
+        </View>
       </View>
-    </>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor handled dynamically
+    padding: 20,
   },
-  listContainer: {
-    paddingVertical: 16,
-    paddingHorizontal: 16,
+  heroSection: {
+    alignItems: 'center',
+    marginBottom: 40,
+    paddingTop: 20,
   },
-  listContainerWithTabBar: {
-    paddingBottom: 100, // Extra padding for floating tab bar
+  iconContainer: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: colors.card,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 24,
+    boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+    elevation: 4,
   },
-  demoCard: {
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
+  heroTitle: {
+    textAlign: 'center',
+    marginBottom: 16,
+    fontSize: 28,
+  },
+  heroDescription: {
+    textAlign: 'center',
+    fontSize: 16,
+    lineHeight: 24,
+    paddingHorizontal: 20,
+  },
+  featuresSection: {
+    flex: 1,
+    marginBottom: 40,
+  },
+  featureItem: {
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: colors.card,
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 12,
+    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
+    elevation: 2,
   },
-  demoIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
-  },
-  demoContent: {
+  featureContent: {
     flex: 1,
+    marginLeft: 16,
   },
-  demoTitle: {
-    fontSize: 18,
+  featureTitle: {
     fontWeight: '600',
     marginBottom: 4,
-    // color handled dynamically
   },
-  demoDescription: {
+  featureDescription: {
     fontSize: 14,
     lineHeight: 18,
-    // color handled dynamically
   },
-  headerButtonContainer: {
-    padding: 6,
+  ctaSection: {
+    alignItems: 'center',
+    paddingBottom: Platform.OS === 'ios' ? 20 : 100,
   },
-  tryButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 6,
+  ctaButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    paddingVertical: 16,
+    marginBottom: 12,
   },
-  tryButtonText: {
-    fontSize: 14,
+  ctaButtonText: {
+    marginLeft: 8,
+    fontSize: 18,
     fontWeight: '600',
-    // color handled dynamically
+  },
+  ctaSubtext: {
+    textAlign: 'center',
+    fontSize: 14,
   },
 });
